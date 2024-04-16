@@ -22,3 +22,6 @@ class DetailTodo(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self, *args, **kwargs):
         return models.Todo.objects.all().filter(owner=self.request.user)
+
+def test_ws(request):
+    return render(request, template_name='test-ws.html')

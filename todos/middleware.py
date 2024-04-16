@@ -8,7 +8,6 @@ from django.conf import settings
 from jwt import decode as jwt_decode
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.tokens import UntypedToken
-from rest_framework_simplejwt.state import User
 from urllib.parse import parse_qs
 
 

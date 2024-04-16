@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <button onclick="connectWebSocket()">Connect WebSocket</button>
+    <button onclick="disconnectWebSocket()">Disconnect WebSocket</button>
+    <hr>
+    <div id="messages"></div>
+
+    <script>
+        var socket;
+
+        function connectWebSocket() {
+            var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEzMjc4MDU5LCJpYXQiOjE3MTMyNzc3NTksImp0aSI6ImU1ZjA5M2ZhN2ZiNzQxYmE5N2U1YmUwM2MyZmFiNDg1IiwidXNlcl9pZCI6MX0.E_LQJLLv1-YT1lZJgkkuY5j9gq2mAw0YUlJyx1zY2PQ"; // Replace with your authentication token
+
+            // Connect to WebSocket server
+            socket = new WebSocket('ws://localhost:8000/ws/todos/?token=' + token);
+
+            // Event listeners
+            socket.onopen = function(event) {
+                console.log('WebSocket connected.');
+            };
+
+            socket.onmessage = function(event) {
+                var data = JSON.parse(event.data);
+                console.log('Message received:', data);
+
+                // Display received message
+                var messageDiv = document.getElementById("messages");
+                messageDiv.innerHTML += "<p>" + JSON.stringify(data) + "</p>";
+            };
+
+            socket.onclose = function(event) {
+                console.log('WebSocket disconnected.');
+            };
+
+            socket.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        function disconnectWebSocket() {
+            if (socket) {
+                socket.close();
+            }
+        }
+    </script>
+</body>
+</html>
