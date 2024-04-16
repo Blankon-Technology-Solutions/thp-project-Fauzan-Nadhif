@@ -35,7 +35,7 @@ First of all, congratulations on reaching this step in the interview series. The
 ## Unit test
 - run python manage.py runserver
 
-## Testing
+## Testing API locally
 
 - Register user
 ```
@@ -111,3 +111,7 @@ curl --location --request PUT 'http://127.0.0.1:8000/todos/1/' \
 curl --location --request DELETE 'http://127.0.0.1:8000/todos/1/' \
 --header 'Authorization: Bearer <YOUR_TOKEN>'
 ```
+
+## Testing WebSocket
+
+You can test the websocket functionaliy by opening localhost:8000/todos/test-ws in your browser. But first, replace the token in templates/test-ws.html (Note that if you are using docker that means you have to change the file from inside the container). Click connect WebSocket and then then calling the todos API.
