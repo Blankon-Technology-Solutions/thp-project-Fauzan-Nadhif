@@ -10,13 +10,11 @@ from django.conf import settings
 
 from users.models import User
 from authentication.serializers import (
-    BasicLoginSerializer,
     RegisterSerializer,
 )
 
 class BasicLoginView(TokenObtainPairView):
     permission_classes = (AllowAny,)
-    serializer_class = BasicLoginSerializer
 
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()

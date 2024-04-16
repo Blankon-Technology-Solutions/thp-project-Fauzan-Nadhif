@@ -7,15 +7,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from users.models import User
 
 
-class BasicLoginSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super(BasicLoginSerializer, cls).get_token(user)
-
-        token["username"] = user.username
-        return token
-
-
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True,
