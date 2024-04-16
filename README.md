@@ -38,13 +38,13 @@ First of all, congratulations on reaching this step in the interview series. The
 ## Testing
 
 - Register user
-
 ```
 curl --location 'http://127.0.0.1:8000/authentication/register' \
 --header 'Content-Type: application/json' \
 --data '{
     "email": "test@gmail.com",
-    "password": "test"
+    "password": "test",
+    "confirm_password": "test"
 }'
 ```
 
@@ -87,4 +87,27 @@ curl --location 'http://127.0.0.1:8000/todos/' \
     "title": "Test Todo",
     "description": "test todo"
 }'
+```
+
+- Get Todo
+```
+curl --location 'http://127.0.0.1:8000/todos/1' \
+--header 'Authorization: Bearer <YOUR_TOKEN>'
+```
+
+- Update Todo
+```
+curl --location --request PUT 'http://127.0.0.1:8000/todos/1/' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <YOUR_TOKEN>' \
+--data '{
+    "title": "Test Todo updated",
+    "description": "Test Todo updated"
+}'
+```
+
+- Delete Todo
+```
+curl --location --request DELETE 'http://127.0.0.1:8000/todos/1/' \
+--header 'Authorization: Bearer <YOUR_TOKEN>'
 ```
