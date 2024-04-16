@@ -8,13 +8,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
-class TodoViewsTestCase(TestCase):
+class ListTodoTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(email='testuser@gmail.com', password='password123')
-        client = APIClient()
         refresh = RefreshToken.for_user(self.user)
-        client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
 
     def test_todo_create(self):
         url = reverse('todos:todos-list')
@@ -35,6 +34,13 @@ class TodoViewsTestCase(TestCase):
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class DetailTodoTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(email='testuser@gmail.com', password='password123')
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
 
     def test_todo_detail(self):
         todo = Todo.objects.create(title='Test Todo', owner=self.user)

@@ -9,9 +9,9 @@ from authentication.views import (
 )
 
 urlpatterns = [
-    path("login/", BasicLoginView.as_view(), name="token_obtain_pair"),
-    path("refresh-token/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("register/", RegisterView.as_view(), name="auth_register"),
-    path("google/", GoogleLoginView.as_view(), name="google_login"),
-    path("linkedin/", LinkedinLoginView.as_view(), name="linkedin_login"),
+    path("register/", RegisterView.as_view(), name="register"),
+    path("login/", BasicLoginView.as_view(), name="basic-login"),
+    path("refresh-token/", TokenRefreshView.as_view(), name="token-refresh"),
+    path("google/", GoogleLoginView.as_view(), name="google-login"),
+    path("linkedin/", LinkedinLoginView.as_view(), name="linkedin-login"),
 ]
