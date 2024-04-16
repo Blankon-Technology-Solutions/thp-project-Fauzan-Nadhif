@@ -9,7 +9,7 @@ from authentication.views import (
 )
 
 urlpatterns = [
-    path("auth-token/", BasicLoginView.as_view(), name="token_obtain_pair"),
+    path("login/", BasicLoginView.as_view(), name="token_obtain_pair"),
     path("refresh-token/", TokenRefreshView.as_view(), name="token_refresh"),
     path("register/", RegisterView.as_view(), name="auth_register"),
     path("google/", GoogleLoginView.as_view(), name="google_login"),

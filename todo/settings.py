@@ -53,12 +53,14 @@ INSTALLED_APPS = [
     'authentication',
 ]
 
+SITE_ID = 1
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 
@@ -90,8 +92,14 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "todo.asgi.application"
 WSGI_APPLICATION = 'todo.wsgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # Use In-Memory channel layer for development
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
