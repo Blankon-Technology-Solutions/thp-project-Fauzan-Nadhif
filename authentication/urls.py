@@ -1,10 +1,17 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
 
-from .apis import GoogleLoginApi, GoogleLoginRedirectApi
+from authentication.views import (
+    BasicLoginView,
+    LinkedinLoginView,
+    GoogleLoginView,
+    RegisterView,
+)
 
-app_name = 'authentication'
 urlpatterns = [
-    path('callback/', GoogleLoginApi.as_view(), name='callback'),
-    path('redirect/', GoogleLoginRedirectApi.as_view(), name='redirect'),
+    path("auth-token/", BasicLoginView.as_view(), name="token_obtain_pair"),
+    path("refresh-token/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("register/", RegisterView.as_view(), name="auth_register"),
+    path("google/", GoogleLoginView.as_view(), name="google_login"),
+    path("linkedin/", LinkedinLoginView.as_view(), name="linkedin_login"),
 ]
-

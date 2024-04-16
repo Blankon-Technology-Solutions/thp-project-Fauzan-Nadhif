@@ -1,17 +1,19 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import UserManager as DefaultUserManager
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+class UserManager(DefaultUserManager):
+    """Custom User Manager."""
+
+    def create_user(self, email, password, **extra_fields):
+        """
+        Creates and saves a User, automatically fills 'username' as email
+        """
+        return super(UserManager, self).create_user(
+            email=email, username=email, password=password, **extra_fields
+        )
 
 class User(AbstractUser):
-    email = models.CharField(max_length=250, unique=True, null=False, blank=False)
-    REGISTRATION_CHOICES = [
-        ('email', 'Email'),
-        ('google', 'Google'),
-    ]
-    registration_method = models.CharField(
-        max_length=10,
-        choices=REGISTRATION_CHOICES,
-        default='email'
-    )
-
-    def __str__(self):
-       return self.email
+    email = models.EmailField(_("email address"), unique=True)
+    objects = UserManager()

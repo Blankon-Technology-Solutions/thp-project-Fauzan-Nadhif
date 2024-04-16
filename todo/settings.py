@@ -11,11 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 
-# Google OAuth2 settings
-BASE_FRONTEND_URL = os.environ.get('DJANGO_BASE_FRONTEND_URL', default='http://localhost:8000')
-GOOGLE_OAUTH2_CLIENT_ID = os.environ.get('GOOGLE_OAUTH2_CLIENT_ID')
-GOOGLE_OAUTH2_CLIENT_SECRET = os.environ.get('GOOGLE_OAUTH2_CLIENT_SECRET')
+load_dotenv()
 
 from pathlib import Path
 
@@ -45,6 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    "rest_framework.authtoken",
+    'dj_rest_auth',
+    "allauth",
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'todos',
     'users',
     'authentication',
@@ -53,6 +56,9 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ]
 }
 
@@ -91,12 +97,15 @@ WSGI_APPLICATION = 'todo.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": os.environ.get("DB_ENGINE", "Database.Engine.Not.Defined"),
+        "HOST": os.environ.get("DB_HOST", "Database.Host.Not.Defined"),
+        "PORT": int(os.environ.get("DB_PORT", "5432")),
+        "NAME": os.environ.get("DB_NAME", "Database.Name.Not.Defined"),
+        "USER": os.environ.get("DB_USERNAME", "Database.UserName.Not.Defined"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -141,12 +150,49 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
 
-GOOGLE_OAUTH2_CLIENT_ID = os.environ['GOOGLE_OAUTH2_CLIENT_ID']
-GOOGLE_OAUTH2_CLIENT_SECRET = os.environ['GOOGLE_OAUTH2_CLIENT_SECRET']
-GOOGLE_OAUTH2_PROJECT_ID = os.environ['GOOGLE_OAUTH2_PROJECT_ID']
-BASE_BACKEND_URL = os.environ.get('BASE_BACKEND_URL', 'http://localhost:8000')
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": os.environ.get(
+                "GOOGLE_OAUTH2_CLIENT_ID", "Google.ClientID.Not.Defined"
+            ),
+            "secret": os.environ.get(
+                "GOOGLE_OAUTH2_CLIENT_SECRET", "Google.ClientSecret.Not.Defined"
+            ),
+            "key": "",
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "VERIFIED_EMAIL": True,
+    },
+    "linkedin": {
+        "SCOPE": ["r_basicprofile", "r_emailaddress"],
+        "PROFILE_FIELDS": [
+            "id",
+            "first-name",
+            "last-name",
+            "email-address",
+            "picture-url",
+            "public-profile-url",
+        ],
+    },
+}
+
+GOOGLE_OAUTH2_CALLBACK_URL = os.environ.get(
+    "GOOGLE_OAUTH2_CALLBACK_URL", "Google.CallbackUrl.Not.Defined"
+)
+
+LINKEDIN_CALLBACK_URL = os.environ.get(
+    "LINKEDIN_OAUTH2_CALLBACK_URL", "Linkedin.CallbackUrl.Not.Defined"
+)
+
+REST_AUTH = {
+    "USE_JWT": True,
+}
