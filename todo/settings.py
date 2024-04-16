@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import sys
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -206,10 +208,15 @@ REST_AUTH = {
 }
 
 class DisableMigrations(object):
+
     def __contains__(self, item):
         return True
 
     def __getitem__(self, item):
-        return None # For Django 1.10+
+        return None
 
-MIGRATION_MODULES = DisableMigrations()
+
+TESTS_IN_PROGRESS = False
+if 'test' in sys.argv[1:]:
+    TESTS_IN_PROGRESS = True
+    MIGRATION_MODULES = DisableMigrations()

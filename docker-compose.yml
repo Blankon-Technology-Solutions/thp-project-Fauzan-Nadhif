@@ -7,7 +7,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    entrypoint: /bin/sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -23,7 +25,7 @@ services:
       - DEBUG=True
 
   db:
-    image: postgres:15
+    image: postgres:16.2
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
