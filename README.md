@@ -114,4 +114,4 @@ curl --location --request DELETE 'http://127.0.0.1:8000/todos/1/' \
 
 ## Testing WebSocket
 
-You can test the websocket functionaliy by opening localhost:8000/todos/test-ws in your browser. But first, replace the token in templates/test-ws.html (Note that if you are using docker that means you have to change the file from inside the container). Click connect WebSocket and then then calling the todos API.
+You can test the websocket functionaliy by opening localhost:8000/todos/test-ws in your browser. But first, replace the token in templates/test-ws.html (Note that if you are using docker that means you have to change the file from inside the container). Click connect WebSocket and then try calling the todos API.
