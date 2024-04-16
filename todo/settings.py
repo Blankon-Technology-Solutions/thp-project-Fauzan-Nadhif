@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    "rest_framework.authtoken",
+    'rest_framework.authtoken',
     'dj_rest_auth',
     "allauth",
     'allauth.socialaccount',
@@ -204,3 +204,12 @@ LINKEDIN_CALLBACK_URL = os.environ.get(
 REST_AUTH = {
     "USE_JWT": True,
 }
+
+class DisableMigrations(object):
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return None # For Django 1.10+
+
+MIGRATION_MODULES = DisableMigrations()
