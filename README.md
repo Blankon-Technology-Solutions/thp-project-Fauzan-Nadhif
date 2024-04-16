@@ -21,3 +21,70 @@ First of all, congratulations on reaching this step in the interview series. The
 ## When you are done
 - 🫸 push your code to this repository, or if you put it in different branch please merge to main branch 🫸
 - 🏷️ Go to issues tab, you will have 1 open issue please label that issue to Ready to Review 🏷️ 
+
+## Setup
+- copy and rename .env.sample into .env and fill out the missing credentials
+- pip install -r requirements.txt
+- create psql database
+- python manage.py migrate
+- python manage.py runserver
+
+## Setup with docker
+- run docker-compose up
+
+## Unit test
+- run python manage.py runserver
+
+## Testing
+
+- Register user
+
+```
+curl --location 'http://127.0.0.1:8000/authentication/register' \
+--header 'Content-Type: application/json' \
+--data '{
+    "email": "test@gmail.com",
+    "password": "test"
+}'
+```
+
+- Login
+```
+curl --location 'http://127.0.0.1:8000/authentication/login/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "test@gmail.com",
+    "password": "test"
+}'
+```
+
+- Login with Google
+Get authorization code from https://developers.google.com/oauthplayground/ or from
+```
+https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=<CALLBACK_URL_YOU_SET_ON_GOOGLE>&prompt=consent&response_type=code&client_id=<YOUR CLIENT ID>&scope=openid%20email%20profile&access_type=offline
+```
+Then use that for:
+```
+curl --location 'http://127.0.0.1:8000/authentication/google/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "code": "<YOUR_AUTHORIZATION_CODE>"
+}'
+```
+
+- List Todos
+```
+curl --location 'http://127.0.0.1:8000/todos' \
+--header 'Authorization: Bearer <YOUR_TOKEN>'
+```
+
+- Create Todo
+```
+curl --location 'http://127.0.0.1:8000/todos/' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <YOUR_TOKEN>' \
+--data '{
+    "title": "Test Todo",
+    "description": "test todo"
+}'
+```
