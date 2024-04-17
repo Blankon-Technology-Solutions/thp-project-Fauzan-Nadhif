@@ -30,10 +30,11 @@ First of all, congratulations on reaching this step in the interview series. The
 - python manage.py runserver
 
 ## Setup with docker
+- copy and rename .env.sample into .env and fill out the missing credentials
 - run docker-compose up
 
 ## Unit test
-- run python manage.py runserver
+- run python manage.py test
 
 ## Testing API locally
 
