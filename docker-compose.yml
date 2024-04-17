@@ -14,14 +14,14 @@ services:
       db:
         condition: service_healthy
     environment:
-      - DB_HOST=db
-      - DB_NAME=todo
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - GOOGLE_OAUTH2_CLIENT_ID
-      - GOOGLE_OAUTH2_CLIENT_SECRET
-      - GOOGLE_OAUTH2_CALLBACK_URL
-      - LINKEDIN_OAUTH2_CALLBACK_URL
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - GOOGLE_OAUTH2_CLIENT_ID=${GOOGLE_OAUTH2_CLIENT_ID}
+      - GOOGLE_OAUTH2_CLIENT_SECRET=${GOOGLE_OAUTH2_CLIENT_SECRET}
+      - GOOGLE_OAUTH2_CALLBACK_URL=${GOOGLE_OAUTH2_CALLBACK_URL}
+      - LINKEDIN_OAUTH2_CALLBACK_URL=${LINKEDIN_OAUTH2_CALLBACK_URL}
       - DEBUG=True
 
   db:
@@ -32,6 +32,6 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      - POSTGRES_DB=todo
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
