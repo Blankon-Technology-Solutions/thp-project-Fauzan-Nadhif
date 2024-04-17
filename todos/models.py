@@ -1,6 +1,7 @@
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.db import models
+from django.dispatch import receiver
 from django.utils import timezone
 from django.db.models.signals import post_save, post_delete
 
@@ -17,11 +18,11 @@ class Todo(models.Model):
             "type": "recieve_todo",
             "message": {
                 "action": message_type,
-                "object_type": "todo",
                 "data": {
-                    "id": str(self.owner.id),
+                    "id": str(self.id),
                     "title": self.title,
                     "description": self.description,
+                    "owner_id": str(self.owner.id)
                 },
             },
         }
@@ -30,21 +31,17 @@ class Todo(models.Model):
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(group_name, message)
 
-    @classmethod
-    def save_handler(cls, sender, instance, created, **kwargs):
-        message = (
-            instance._build_message("create")
-            if created
-            else instance._build_message("update")
-        )
+@receiver(post_save, sender=Todo)
+def notify_on_save(sender, instance, created, **kwargs):
+    action = "update"
+    if created:
+        action = "create"
 
-        instance._send_message(str(1), message)
+    message = instance._build_message(action)
 
-    @classmethod
-    def delete_handler(cls, sender, instance, *args, **kwargs):
-        message = instance._build_message("delete")
-        instance._send_message(str(1), message)
+    instance._send_message(str(instance.owner.id), message)
 
-
-post_save.connect(Todo.save_handler, sender=Todo)
-post_delete.connect(Todo.delete_handler, sender=Todo)
+@receiver(post_delete, sender=Todo)
+def notify_on_delete(sender, instance, *args, **kwargs):
+    message = instance._build_message("delete")
+    instance._send_message(str(instance.owner.id), message)
