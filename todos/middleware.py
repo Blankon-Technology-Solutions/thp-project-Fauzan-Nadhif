@@ -10,11 +10,12 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.tokens import UntypedToken
 from urllib.parse import parse_qs
 
+User = get_user_model()
 
 @database_sync_to_async
 def get_user(validated_token):
     try:
-        user = get_user_model().objects.get(id=validated_token["user_id"])
+        user = User.objects.get(id=validated_token["user_id"])
         return user
 
     except User.DoesNotExist:
