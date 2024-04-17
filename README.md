@@ -72,6 +72,11 @@ curl --location 'http://127.0.0.1:8000/authentication/google/' \
     "code": "<YOUR_AUTHORIZATION_CODE>"
 }'
 ```
+Things to note:
+    - Make sure the credentials and callback_url are configured properly
+    - The authorization code is url encoded, replace the "%2f" with "/" first
+    - If you get Failed to exchange code for access token. This may be because you try to login using the same account multiple times
+
 
 - List Todos
 ```
